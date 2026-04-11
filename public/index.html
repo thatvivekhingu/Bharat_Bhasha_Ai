@@ -588,7 +588,7 @@ For medical/legal topics add: ⚠️ Kisi expert se zaroor milein`;
 
     try {
       // ✅ Ab directly Groq nahi — apna server call ho raha hai
-      const res = await fetch("/api/chat", {
+      const res = await fetch("http://localhost:3000/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
