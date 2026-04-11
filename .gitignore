@@ -1,0 +1,12 @@
+# Secret keys - NEVER upload these
+.env
+
+# Node modules - too large to upload
+node_modules/
+
+# VS Code settings
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

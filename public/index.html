@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>BharatBhasha AI</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Noto+Sans:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --saffron: #ff6b00;
+        --deep: #1a0a00;
+        --card: #1e1209;
+        --cream: #fff3e0;
+        --green: #00c16e;
+        --muted: #8a6a50;
+        --border: #3a2210;
+        --glow: rgba(255, 107, 0, 0.25);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--deep);
+        font-family: "Noto Sans", sans-serif;
+        color: var(--cream);
+        min-height: 100vh;
+        overflow-x: hidden;
+        background-image: radial-gradient(
+          ellipse 80% 60% at 50% -10%,
+          rgba(255, 107, 0, 0.18) 0%,
+          transparent 70%
+        );
+      }
+      header {
+        text-align: center;
+        padding: 48px 20px 24px;
+      }
+      .logo-row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin-bottom: 10px;
+      }
+      .logo-icon {
+        width: 52px;
+        height: 52px;
+        background: linear-gradient(135deg, var(--saffron), #ff9800);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        animation: pulse 3s ease-in-out infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 24px var(--glow);
+        }
+        50% {
+          box-shadow: 0 0 48px rgba(255, 107, 0, 0.5);
+        }
+      }
+      h1 {
+        font-family: "Baloo 2", cursive;
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        color: var(--cream);
+      }
+      h1 span {
+        color: var(--saffron);
+      }
+      .tagline {
+        font-size: 0.95rem;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+        margin-top: 18px;
+      }
+      .badge {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 14px;
+        font-size: 0.78rem;
+        color: var(--muted);
+      }
+      .badge.green {
+        color: var(--green);
+        border-color: rgba(0, 193, 110, 0.3);
+      }
+      .badge.orange {
+        color: var(--saffron);
+        border-color: rgba(255, 107, 0, 0.3);
+      }
+      .main-card {
+        max-width: 700px;
+        margin: 24px auto 0;
+        padding: 0 16px 60px;
+      }
+      .section {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 28px;
+        margin-bottom: 16px;
+        transition: border-color 0.3s;
+      }
+      .section:focus-within {
+        border-color: var(--saffron);
+      }
+      .section-label {
+        font-family: "Baloo 2", cursive;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--saffron);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+      textarea,
+      input[type="password"] {
+        width: 100%;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--cream);
+        font-family: "Noto Sans", sans-serif;
+        font-size: 1rem;
+        padding: 14px 16px;
+        outline: none;
+        transition: border-color 0.2s;
+        line-height: 1.6;
+      }
+      textarea {
+        resize: vertical;
+        min-height: 100px;
+      }
+      textarea:focus,
+      input[type="password"]:focus {
+        border-color: var(--saffron);
+        background: rgba(255, 107, 0, 0.05);
+      }
+      textarea::placeholder,
+      input[type="password"]::placeholder {
+        color: var(--muted);
+      }
+      .hint {
+        font-size: 0.78rem;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+      .hint a {
+        color: var(--saffron);
+        text-decoration: none;
+      }
+      .lang-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+      }
+      .lang-btn {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--cream);
+        font-family: "Noto Sans", sans-serif;
+        font-size: 0.9rem;
+        padding: 10px 8px;
+        cursor: pointer;
+        transition: all 0.2s;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+      }
+      .lang-btn:hover {
+        border-color: var(--saffron);
+        color: var(--saffron);
+        background: rgba(255, 107, 0, 0.07);
+      }
+      .lang-btn.active {
+        border-color: var(--saffron);
+        background: rgba(255, 107, 0, 0.15);
+        color: var(--saffron);
+        box-shadow: 0 0 16px var(--glow);
+      }
+      .lang-btn .flag {
+        font-size: 1.4rem;
+      }
+      .lang-btn .name {
+        font-size: 0.78rem;
+      }
+      .examples-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+      .ex-chip {
+        background: rgba(255, 107, 0, 0.08);
+        border: 1px solid rgba(255, 107, 0, 0.2);
+        border-radius: 8px;
+        padding: 5px 12px;
+        font-size: 0.8rem;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .ex-chip:hover {
+        background: rgba(255, 107, 0, 0.18);
+        color: var(--saffron);
+        border-color: var(--saffron);
+      }
+      .generate-btn {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, var(--saffron) 0%, #ff9800 100%);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        font-family: "Baloo 2", cursive;
+        font-size: 1.15rem;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 0.5px;
+        transition: transform 0.2s, box-shadow 0.2s;
+        box-shadow: 0 8px 32px rgba(255, 107, 0, 0.3);
+        margin-bottom: 16px;
+      }
+      .generate-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(255, 107, 0, 0.45);
+      }
+      .generate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .output-wrap {
+        display: none;
+      }
+      .output-wrap.visible {
+        display: block;
+        animation: fadeUp 0.5s ease;
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .output-section {
+        background: linear-gradient(
+          135deg,
+          rgba(0, 193, 110, 0.07),
+          rgba(0, 193, 110, 0.03)
+        );
+        border: 1px solid rgba(0, 193, 110, 0.3);
+        border-radius: 20px;
+        padding: 28px;
+        margin-bottom: 16px;
+      }
+      .output-label {
+        font-family: "Baloo 2", cursive;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--green);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .output-text {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: var(--cream);
+        white-space: pre-wrap;
+      }
+      .loader {
+        display: none;
+        text-align: center;
+        padding: 32px;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .loader.visible {
+        display: block;
+      }
+      .loader-dots span {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--saffron);
+        border-radius: 50%;
+        margin: 0 3px;
+        animation: bounce 1.2s infinite;
+      }
+      .loader-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .loader-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+      .error-box {
+        background: rgba(255, 50, 50, 0.1);
+        border: 1px solid rgba(255, 50, 50, 0.3);
+        border-radius: 12px;
+        padding: 16px;
+        color: #ff6b6b;
+        font-size: 0.9rem;
+        display: none;
+        margin-bottom: 16px;
+      }
+      .error-box.visible {
+        display: block;
+      }
+      .guardrails {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 24px 28px;
+        margin-bottom: 16px;
+      }
+      .g-title {
+        font-family: "Baloo 2", cursive;
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--muted);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 14px;
+      }
+      .g-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .g-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 0.85rem;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+      .g-list li::before {
+        content: "✓";
+        color: var(--green);
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+      footer {
+        text-align: center;
+        padding: 20px;
+        font-size: 0.75rem;
+        color: var(--muted);
+        opacity: 0.6;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo-row">
+        <div class="logo-icon">🇮🇳</div>
+        <h1>Bharat<span>Bhasha</span> AI</h1>
+      </div>
+      <p class="tagline">Real-time language helper for every Indian user</p>
+      <div class="badge-row">
+        <span class="badge orange">⚡ Groq Powered</span>
+        <span class="badge green">🛡️ Safe & Ethical</span>
+        <span class="badge">🌐 10+ Languages</span>
+      </div>
+    </header>
+
+    <div class="main-card">
+      <div class="section">
+        <div class="section-label">📝 Your Question</div>
+        <textarea
+          id="userInput"
+          placeholder="Kuch bhi poochho... e.g. What is health insurance? / Bank loan kya hota hai?"
+        ></textarea>
+        <div class="examples-row">
+          <span
+            class="ex-chip"
+            onclick="fillExample('What is health insurance?')"
+            >Health Insurance</span
+          >
+          <span
+            class="ex-chip"
+            onclick="fillExample('Bank loan kaise lete hain?')"
+            >Bank Loan</span
+          >
+          <span
+            class="ex-chip"
+            onclick="fillExample('Digital payments kya hote hain?')"
+            >Digital Payments</span
+          >
+          <span
+            class="ex-chip"
+            onclick="fillExample('Right to education kya hai?')"
+            >Right to Education</span
+          >
+          <span class="ex-chip" onclick="fillExample('Climate change kya hai?')"
+            >Climate Change</span
+          >
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-label">🌐 Select Output Language</div>
+        <div class="lang-grid">
+          <button
+            class="lang-btn active"
+            data-lang="Hindi"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🇮🇳</span><span class="name">Hindi</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Gujarati"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟧</span><span class="name">Gujarati</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Marathi"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟠</span><span class="name">Marathi</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Bengali"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟡</span><span class="name">Bengali</span>
+          </button>
+          <button class="lang-btn" data-lang="Tamil" onclick="selectLang(this)">
+            <span class="flag">🔵</span><span class="name">Tamil</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Telugu"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟢</span><span class="name">Telugu</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Kannada"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟤</span><span class="name">Kannada</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Malayalam"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🔴</span><span class="name">Malayalam</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Punjabi"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🟣</span><span class="name">Punjabi</span>
+          </button>
+          <button
+            class="lang-btn"
+            data-lang="Simple English"
+            onclick="selectLang(this)"
+          >
+            <span class="flag">🇬🇧</span><span class="name">Simple English</span>
+          </button>
+        </div>
+      </div>
+
+      <button class="generate-btn" onclick="generate()" id="genBtn">
+        ✨ Explain in My Language
+      </button>
+
+      <div class="error-box" id="errorBox"></div>
+      <div class="loader" id="loader">
+        <div class="loader-dots"><span></span><span></span><span></span></div>
+        <p style="margin-top: 12px">AI soch rahi hai...</p>
+      </div>
+
+      <div class="output-wrap" id="outputWrap">
+        <div class="output-section">
+          <div class="output-label">✅ AI Response</div>
+          <div class="output-text" id="outputText"></div>
+        </div>
+      </div>
+
+      <div class="guardrails">
+        <div class="g-title">🛡️ Safety & Ethics (Guardrails)</div>
+        <ul class="g-list">
+          <li>
+            Harmful, violent, or offensive content is automatically blocked
+          </li>
+          <li>
+            Sensitive topics (medical, legal) answered safely with "consult an
+            expert" advice
+          </li>
+          <li>
+            No misinformation — responses are factual and culturally relevant
+          </li>
+          <li>Bias-free: all languages and dialects treated equally</li>
+          <li>Private data is never stored or shared</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      BharatBhasha AI · Hackathon Project · Powered by Groq (LLaMA 3)
+    </footer>
+
+    <script>
+  let selectedLang = "Hindi";
+
+  const SYSTEM_PROMPT = `You are BharatBhasha AI, a helpful assistant that explains topics in simple language for Indian users.
+Respond ONLY in the language specified. Structure answer as:
+📖 Explanation: [3-4 sentences in chosen language]
+💡 Real-life Example: [relatable Indian example]
+🔖 Key Word: [term] = [simple meaning]
+For medical/legal topics add: ⚠️ Kisi expert se zaroor milein`;
+
+  function selectLang(el) {
+    document.querySelectorAll(".lang-btn").forEach((b) => b.classList.remove("active"));
+    el.classList.add("active");
+    selectedLang = el.dataset.lang;
+  }
+
+  function fillExample(text) {
+    document.getElementById("userInput").value = text;
+  }
+
+  async function generate() {
+    const input = document.getElementById("userInput").value.trim();
+    const btn = document.getElementById("genBtn");
+    const loader = document.getElementById("loader");
+    const outWrap = document.getElementById("outputWrap");
+    const outText = document.getElementById("outputText");
+    const errBox = document.getElementById("errorBox");
+
+    errBox.classList.remove("visible");
+    outWrap.classList.remove("visible");
+    outText.textContent = "";
+
+    if (!input) {
+      errBox.textContent = "⚠️ Kuch toh poochho! Question box khali hai.";
+      errBox.classList.add("visible");
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = "⏳ Generating...";
+    loader.classList.add("visible");
+
+    try {
+      // ✅ Ab directly Groq nahi — apna server call ho raha hai
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "llama-3.3-70b-versatile",
+          max_tokens: 600,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: "Explain in " + selectedLang + ": " + input },
+          ],
+        }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data?.error?.message || "Error " + res.status);
+
+      const result = data?.choices?.[0]?.message?.content;
+      if (!result) throw new Error("Koi response nahi aaya.");
+
+      outText.textContent = result;
+      outWrap.classList.add("visible");
+
+    } catch (err) {
+      errBox.textContent = "❌ " + (err.name === "TypeError" ? "Server chal nahi raha — node server.js run karo." : err.message);
+      errBox.classList.add("visible");
+    } finally {
+      loader.classList.remove("visible");
+      btn.disabled = false;
+      btn.textContent = "✨ Explain in My Language";
+    }
+  }
+
+  document.getElementById("userInput").addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && e.ctrlKey) generate();
+  });
+</script>
