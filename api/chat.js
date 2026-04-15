@@ -16,7 +16,13 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${GROQ_API_KEY}`,
       },
-      body: JSON.stringify(req.body),
+      body: JSON.stringify({
+        model: "llama-3.1-70b-versatile",
+        temperature: 0.9,
+        top_p: 0.9,
+        max_tokens: 250,
+        messages: req.body.messages,
+      }),
     });
 
     const data = await response.json();

@@ -1,36 +1,33 @@
-
-
 let selectedLang = "Hindi";
 
-const SYSTEM_PROMPT = `You are BharatBhasha AI, a helpful assistant that explains topics in simple language for Indian users.
+const SYSTEM_PROMPT = (lang) => `
+You are a friendly Indian human.
 
-Rules:
-1. Respond ONLY in the language the user specifies (Hindi, Gujarati, Tamil, etc.)
-2. Use simple vocabulary common people understand
-3. Structure your answer exactly like this:
+VERY IMPORTANT RULE:
+- You MUST reply ONLY in ${lang}
+- NEVER use English if ${lang} is not English
+- If you break this rule, your answer is WRONG
 
-📖 Explanation:
-[Simple 3-4 sentence explanation in chosen language]
+Style:
+- Talk like WhatsApp chat
+- Short replies (2-3 lines max)
+- Casual + friendly 😄
+- Use local words of ${lang}
 
-💡 Real-life Example:
-[A relatable Indian example]
+Behavior:
+- Explain like a normal person
+- No headings, no format
+- No Explanation/Example sections
 
-🔖 Key Word:
-[Main term] = [Simple meaning]
-
-4. For medical/legal topics always add: ⚠️ Kisi expert se zaroor milein
-5. Never respond to harmful, violent, or illegal content`;
-
+Goal:
+- Sound like a real human from India speaking ${lang}
+`;
 function selectLang(el) {
   document
     .querySelectorAll(".lang-btn")
     .forEach((b) => b.classList.remove("active"));
   el.classList.add("active");
   selectedLang = el.dataset.lang;
-}
-
-function fillExample(text) {
-  document.getElementById("userInput").value = text;
 }
 
 function showError(msg) {
@@ -45,36 +42,29 @@ async function generate() {
   const loader = document.getElementById("loader");
   const outWrap = document.getElementById("outputWrap");
   const outText = document.getElementById("outputText");
-  const errBox = document.getElementById("errorBox");
-
-  errBox.classList.remove("visible");
-  outWrap.classList.remove("visible");
-  outText.textContent = "";
 
   if (!input) {
-    showError("⚠️ Kuch toh poochho! Question box khali hai.");
+    showError("⚠️ Kuch toh poochho!");
     return;
   }
 
   btn.disabled = true;
-  btn.textContent = "⏳ Generating...";
+  btn.textContent = "⏳ Soch raha hu...";
   loader.classList.add("visible");
+  outText.textContent = "";
 
   try {
-    const response = await fetch("/api/chat", {
+    const response = await fetch("http://localhost:3000/api/chat",{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "llama-3.3-70b-versatile",
-        max_tokens: 600,
-        temperature: 0.7,
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
           {
             role: "user",
-            content: `Explain this topic in ${selectedLang}: "${input}"`,
+            content: `User asked in ${selectedLang}: ${input}. Reply like a friendly human.`,
           },
         ],
       }),
@@ -83,24 +73,25 @@ async function generate() {
     const data = await response.json();
 
     if (!response.ok) {
-      if (response.status === 401) throw new Error("Invalid API key ❌");
-      if (response.status === 429)
-        throw new Error("Rate limit ⏳ — thodi der baad try karo.");
-      throw new Error(data?.error?.message || `Error ${response.status}`);
+      throw new Error(data?.error?.message || "Error");
     }
 
     const result = data?.choices?.[0]?.message?.content;
-    if (!result) throw new Error("Koi response nahi aaya.");
 
-    outText.textContent = result;
+    // 🔥 typing effect
     outWrap.classList.add("visible");
+    let i = 0;
+    function typeWriter() {
+      if (i < result.length) {
+        outText.textContent += result.charAt(i);
+        i++;
+        setTimeout(typeWriter, 15);
+      }
+    }
+    typeWriter();
+
   } catch (err) {
-    showError(
-      "❌ " +
-        (err.name === "TypeError"
-          ? "Network error — internet check karo."
-          : err.message)
-    );
+    showError("❌ " + err.message);
   } finally {
     loader.classList.remove("visible");
     btn.disabled = false;
